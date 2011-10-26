@@ -56,7 +56,14 @@ void runalgorithms(int testIdx) {
 	printf(" | naive[%d]: %lf ... %s\r\n", testIdx, (finish - start), testCorrectness(test, f) ? "ok" : "failed");
 	//----------------------------------------------------------------------
 
-	
+	//------------------------ one alg block -------------------------------
+	start = omp_get_wtime();
+	f = dailyOne(inputs[testIdx]);
+	finish = omp_get_wtime();
+	printFrame(testIdx, f);
+	printf(" | daily one[%d]: %lf ... %s\r\n", testIdx, (finish - start), testCorrectness(test, f) ? "ok" : "failed");
+	//----------------------------------------------------------------------
+
 	for (i = 0; i < task.M; i++) free(A[i]);
 	free(A);	
 }
