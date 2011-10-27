@@ -39,7 +39,8 @@ void runalgorithms(int testIdx) {
 	struct frame test = readNextTest();
 	//printFrame(testIdx, test);
 	fillA(task, A);
-
+	
+	if (task.M * task.N < 5000) {
 	//------------------------ one alg block -------------------------------
 	start = omp_get_wtime();
 	f = naive_parallel(inputs[testIdx]);
@@ -55,7 +56,7 @@ void runalgorithms(int testIdx) {
 	printFrame(testIdx, f);
 	printf(" | naive[%d]: %lf ... %s\r\n", testIdx, (finish - start), testCorrectness(test, f) ? "ok" : "failed");
 	//----------------------------------------------------------------------
-
+	}
 	//------------------------ one alg block -------------------------------
 	start = omp_get_wtime();
 	f = dailyOne(inputs[testIdx]);

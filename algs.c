@@ -84,7 +84,8 @@ struct frame dailyOne(struct cortage task) {
 	omp_init_lock(&lock);
 	
 	// create helper matrix
-	int H[task.M][task.N];
+	//int H[task.M][task.N];
+	int **H = A;
 	for (i = 0; i < task.M; i++) {
 		for (j = 0; j < task.N; j++) {
 			H[i][j] = 
@@ -95,7 +96,7 @@ struct frame dailyOne(struct cortage task) {
 		}
 	}
 	
-//#pragma omp parallel for private(j, j0, i0)
+#pragma omp parallel for private(j, j0, i0)
 	for (i = 0; i < task.M; i++) 
 	for (j = 0; j < task.N; j++) 
 		for (i0 = 0; i0 <= i; i0++)
@@ -103,10 +104,10 @@ struct frame dailyOne(struct cortage task) {
 			
 			currentSum = 
 				H[i][j] 
-				- H[i0][j] 
-				- H[i][j0]
+				- ( i0 ? H[i0 - 1][j] : 0 ) 
+				- ( j0 ? H[i][j0 - 1] : 0 )
 				+ ((i0 && j0) ? H[i0-1][j0-1] : 0);
-			
+						
 			if (currentSum > maxSum) {
 				omp_set_lock(&lock);
 				maxSum = currentSum;
