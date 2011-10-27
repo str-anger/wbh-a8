@@ -37,26 +37,35 @@ void runalgorithms(int testIdx) {
 	printCortage(task);
 	printf("=========\r\n");	
 	struct frame test = readNextTest();
-	//printFrame(testIdx, test);
+	printFrame(testIdx, test);
 	fillA(task, A);
 	
 	if (task.M * task.N < 5000) {
-	//------------------------ one alg block -------------------------------
-	start = omp_get_wtime();
-	f = naive_parallel(inputs[testIdx]);
-	finish = omp_get_wtime();
-	printFrame(testIdx, f);
-	printf(" | naive parallel[%d]: %lf ... %s\r\n", testIdx, (finish - start), testCorrectness(test, f) ? "ok" : "failed");
-	//----------------------------------------------------------------------
+		//------------------------ one alg block -------------------------------
+		start = omp_get_wtime();
+		f = naive_parallel(inputs[testIdx]);
+		finish = omp_get_wtime();
+		printFrame(testIdx, f);
+		printf(" | naive parallel[%d]: %lf ... %s\r\n", testIdx, (finish - start), testCorrectness(test, f) ? "ok" : "failed");
+		//----------------------------------------------------------------------
+
+		//------------------------ one alg block -------------------------------
+		start = omp_get_wtime();
+		f = naive(inputs[testIdx]);
+		finish = omp_get_wtime();
+		printFrame(testIdx, f);
+		printf(" | naive[%d]: %lf ... %s\r\n", testIdx, (finish - start), testCorrectness(test, f) ? "ok" : "failed");
+		//----------------------------------------------------------------------
+	}
 
 	//------------------------ one alg block -------------------------------
 	start = omp_get_wtime();
-	f = naive(inputs[testIdx]);
+	f = Kadane(inputs[testIdx]);
 	finish = omp_get_wtime();
 	printFrame(testIdx, f);
-	printf(" | naive[%d]: %lf ... %s\r\n", testIdx, (finish - start), testCorrectness(test, f) ? "ok" : "failed");
+	printf(" | Kadane[%d]: %lf ... %s\r\n", testIdx, (finish - start), testCorrectness(test, f) ? "ok" : "failed");
 	//----------------------------------------------------------------------
-	}
+
 	//------------------------ one alg block -------------------------------
 	start = omp_get_wtime();
 	f = dailyOne(inputs[testIdx]);
